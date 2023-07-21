@@ -1,6 +1,7 @@
 using Library2._2.Infrastructure;
 using Library2._2.Interfaces.AuthorInterfaces;
 using Library2._2.Interfaces.BookInterfaces;
+using Library2._2.Interfaces.RoleInterfaces;
 using Library2._2.Interfaces.UserInterfaces;
 using Library2._2.Services;
 using MediatR;
@@ -39,6 +40,7 @@ namespace Library2._2
             builder.Services.AddScoped<IGetBooksInfo, BookService>();
             builder.Services.AddScoped<IAddDeleteUser, UserService>();
             builder.Services.AddScoped<IGetUsersInfo, UserService>();
+            builder.Services.AddScoped<IAddDeleteRole, RoleService>();
 
             var app = builder.Build();
 

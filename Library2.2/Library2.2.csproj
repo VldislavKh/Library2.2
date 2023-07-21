@@ -8,9 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\BookInterfaces\" />
+    <Folder Include="Commands\BookCommands\" />
+    <Folder Include="Commands\UserCommands\" />
+    <Folder Include="Commands\RoleCommands\" />
     <Folder Include="Interfaces\UserInterfaces\" />
     <Folder Include="Interfaces\RoleInterfaces\" />
+    <Folder Include="Queries\BookQueries\" />
+    <Folder Include="Queries\RoleQueries\" />
+    <Folder Include="Queries\UserQueries\" />
   </ItemGroup>
 
   <ItemGroup>

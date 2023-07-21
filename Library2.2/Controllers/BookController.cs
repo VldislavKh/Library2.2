@@ -36,7 +36,7 @@ namespace Library2._2.Controllers
         public async Task<IActionResult> GetAuthor(int id, CancellationToken token)
         {
             var author = await _mediator.Send(new GetAuthorByIdQuery() { Id = id }, token);
-            return CreatedAtAction("GetAuthorByTitle", author);
+            return CreatedAtAction("GetAuthor", author);
         }
 
         [HttpGet("[action]/{id}")]
@@ -44,7 +44,7 @@ namespace Library2._2.Controllers
         public async Task<IActionResult> GetGenre(int id, CancellationToken token)
         {
             var genre = await _mediator.Send(new GetGenreByIdQuery() { Id = id }, token);
-            return CreatedAtAction("GetGenreByTitle", genre);
+            return CreatedAtAction("GetGenre", genre);
         }
     }
 }

@@ -4,6 +4,7 @@ using Library2._2.Interfaces.BookInterfaces;
 using Library2._2.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Reflection;
 
 namespace Library2._2
@@ -24,6 +25,12 @@ namespace Library2._2
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+
+            builder.Services.AddControllersWithViews()
+                    .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    });
 
             builder.Services.AddScoped<IAddDeleteAuthor, AuthorService>();
             builder.Services.AddScoped<IGetAuthorsInfo, AuthorService>();

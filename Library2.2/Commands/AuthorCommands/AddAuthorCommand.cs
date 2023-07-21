@@ -1,4 +1,4 @@
-﻿namespace Library2._2.Commands
+﻿namespace Library2._2.Commands.AuthorCommands
 {
     public class AddAuthorCommand
     {

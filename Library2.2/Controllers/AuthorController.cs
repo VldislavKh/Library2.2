@@ -21,5 +21,13 @@ namespace Library2._2.Controllers
         {
             return await _mediator.Send(command, token);
         }
+
+        [HttpDelete("[action]/{id}")]
+        // Удаляет автора из указанной БД
+        public async Task<IActionResult> DeleteAuthor(int id, CancellationToken token)
+        {
+            await _mediator.Send(new DeleteAuthorCommand() { AuthorId = id }, token);
+            return NoContent();
+        }
     }
 }

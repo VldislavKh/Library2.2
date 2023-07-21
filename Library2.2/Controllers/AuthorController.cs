@@ -1,4 +1,5 @@
 ﻿using Library2._2.Commands.AuthorCommands;
+using Library2._2.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,5 +30,16 @@ namespace Library2._2.Controllers
             await _mediator.Send(new DeleteAuthorCommand() { AuthorId = id }, token);
             return NoContent();
         }
+
+        [HttpGet("[action]")]
+        //Возвращает список всех авторов из бд 
+        public async Task<IActionResult> GetAllAuthors(CancellationToken token)
+        {
+
+            var authors = await _mediator.Send(new GetAllAuthorsQuery(), token);
+            return CreatedAtAction("GetAllAuthors", authors);
+        }
+
+        
     }
 }

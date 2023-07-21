@@ -25,6 +25,7 @@ namespace Library2._2
             builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
             builder.Services.AddScoped<IAddDeleteAuthor, AuthorService>();
+            builder.Services.AddScoped<IGetAuthorsInfo, AuthorService>();
 
             var app = builder.Build();
 

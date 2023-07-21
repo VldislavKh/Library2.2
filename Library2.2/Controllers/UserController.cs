@@ -27,5 +27,12 @@ namespace Library2._2.Controllers
             await _mediator.Send(new DeleteUserCommand() { Id = id }, cancellationToken);
             return NoContent();
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllUsers(CancellationToken cancellationToken)
+        {
+            var users = await _mediator.Send(new GetAllUsersQuery(), cancellationToken);
+            return CreatedAtAction("GetAllUsers", users);
+        }
     }
 }

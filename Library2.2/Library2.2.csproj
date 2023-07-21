@@ -9,7 +9,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\RoleCommands\" />
-    <Folder Include="Interfaces\RoleInterfaces\" />
     <Folder Include="Queries\RoleQueries\" />
   </ItemGroup>
 

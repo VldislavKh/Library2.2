@@ -38,5 +38,13 @@ namespace Library2._2.Controllers
             var author = await _mediator.Send(new GetAuthorByIdQuery() { Id = id }, token);
             return CreatedAtAction("GetAuthorByTitle", author);
         }
+
+        [HttpGet("[action]/{id}")]
+        //Возвращает жанр книги из бд по её названию
+        public async Task<IActionResult> GetGenre(int id, CancellationToken token)
+        {
+            var genre = await _mediator.Send(new GetGenreByIdQuery() { Id = id }, token);
+            return CreatedAtAction("GetGenreByTitle", genre);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Library2._2.Commands.RoleCommands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library2._2.Controllers
@@ -12,6 +13,12 @@ namespace Library2._2.Controllers
         public RoleController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+
+        [HttpPut("[action]")]
+        public async Task<ActionResult<int>> AddRole([FromBody] AddRoleCommand command, CancellationToken cancellationToken)
+        {
+            return await _mediator.Send(command, cancellationToken);
         }
     }
 }

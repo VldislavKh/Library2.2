@@ -1,3 +1,6 @@
+using Library2._2.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+
 namespace Library2._2
 {
     public class Program
@@ -9,6 +12,8 @@ namespace Library2._2
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddDbContext<ApplicationContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 

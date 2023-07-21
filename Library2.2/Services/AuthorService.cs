@@ -4,7 +4,7 @@ using Library2._2.Interfaces.AuthorInterfaces;
 
 namespace Library2._2.Services
 {
-    public class AuthorService : IAddDeleteAuthor
+    public class AuthorService : IAddDeleteAuthor, IGetAuthorsInfo
     {
         private readonly ApplicationContext _context;
         public AuthorService(ApplicationContext context)
@@ -32,6 +32,23 @@ namespace Library2._2.Services
                 _context.Remove(author);
                 _context.SaveChanges();
             }
+        }
+
+        public List<Author> GetAll()
+        {
+            return _context.Authors.ToList();
+        }
+
+        public List<Book> GetBooks(int id)
+        {
+            return _context.Books.Where(x => x.AuthorId == id).ToList();
+        }
+
+        public List<Author> GetMaxBooksAuthors()
+        {
+            int maxBooks = _context.Authors.Max(x => x.Books.Count);
+            return _context.Authors.Where(x => x.Books.Count == maxBooks)
+                                    .OrderBy(x => x.Name).ToList();
         }
     }
 }

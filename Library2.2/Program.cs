@@ -38,6 +38,7 @@ namespace Library2._2
             builder.Services.AddScoped<IAddDeleteBook, BookService>();
             builder.Services.AddScoped<IGetBooksInfo, BookService>();
             builder.Services.AddScoped<IAddDeleteUser, UserService>();
+            builder.Services.AddScoped<IGetUsersInfo, UserService>();
 
             var app = builder.Build();
 

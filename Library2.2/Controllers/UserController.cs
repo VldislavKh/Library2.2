@@ -1,4 +1,5 @@
 ﻿using Library2._2.Commands.UserCommands;
+using Library2._2.Queries.UserQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

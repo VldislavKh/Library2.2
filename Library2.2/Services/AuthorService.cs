@@ -1,9 +1,10 @@
 ﻿using Library2._2.Entities;
 using Library2._2.Infrastructure;
+using Library2._2.Interfaces.AuthorInterfaces;
 
 namespace Library2._2.Services
 {
-    public class AuthorService
+    public class AuthorService : IAddDeleteAuthor
     {
         private readonly ApplicationContext _context;
         public AuthorService(ApplicationContext context)

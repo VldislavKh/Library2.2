@@ -12,7 +12,6 @@
     <Folder Include="Commands\RoleCommands\" />
     <Folder Include="Interfaces\UserInterfaces\" />
     <Folder Include="Interfaces\RoleInterfaces\" />
-    <Folder Include="Queries\BookQueries\" />
     <Folder Include="Queries\RoleQueries\" />
     <Folder Include="Queries\UserQueries\" />
   </ItemGroup>

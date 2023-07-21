@@ -2,7 +2,7 @@
 using Library2._2.Interfaces.AuthorInterfaces;
 using MediatR;
 
-namespace Library2._2.Queries
+namespace Library2._2.Queries.AuthorQueries
 {
     public class GetAllAuthorsQuery : IRequest<List<Author>>
     {

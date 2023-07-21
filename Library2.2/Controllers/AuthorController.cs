@@ -1,5 +1,5 @@
 ﻿using Library2._2.Commands.AuthorCommands;
-using Library2._2.Queries;
+using Library2._2.Queries.AuthorQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,11 +35,24 @@ namespace Library2._2.Controllers
         //Возвращает список всех авторов из бд 
         public async Task<IActionResult> GetAllAuthors(CancellationToken token)
         {
-
             var authors = await _mediator.Send(new GetAllAuthorsQuery(), token);
             return CreatedAtAction("GetAllAuthors", authors);
         }
 
-        
+        [HttpGet("[action]/{id}")]
+        // Возвращает список книг автора    
+        public async Task<IActionResult> GetAuthorsBooks(int id, CancellationToken token)
+        {
+            var books = await _mediator.Send(new GetAuthorsBooksQuery() { AuthorId = id }, token);
+            return CreatedAtAction("GetAuthorsBooks", books);
+        }
+
+        [HttpGet("[action]")]
+        //Возвращает список авторов, у которых максмальное количество книг 
+        public async Task<IActionResult> GetMaxBooksAuthors(CancellationToken token)
+        {
+            var authors = await _mediator.Send(new GetMaxBooksAuthorsQuery(), token);
+            return CreatedAtAction("GetMaxBooksAuthors", authors);
+        }
     }
 }

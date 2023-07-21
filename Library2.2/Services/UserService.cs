@@ -4,7 +4,7 @@ using Library2._2.Interfaces.UserInterfaces;
 
 namespace Library2._2.Services
 {
-    public class UserService : IAddDeleteUser
+    public class UserService : IAddDeleteUser, IGetUsersInfo
     {
         private readonly ApplicationContext _context;
 
@@ -39,6 +39,11 @@ namespace Library2._2.Services
                 _context.Users.Remove(user);
                 _context.SaveChanges();
             }
+        }
+
+        public List<User> GetAll()
+        {
+            return _context.Users.ToList();
         }
     }
 }

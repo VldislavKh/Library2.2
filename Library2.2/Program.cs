@@ -1,7 +1,9 @@
 using Library2._2.Infrastructure;
 using Library2._2.Interfaces.AuthorInterfaces;
 using Library2._2.Services;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace Library2._2
 {
@@ -20,6 +22,7 @@ namespace Library2._2
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
             builder.Services.AddScoped<IAddDeleteAuthor, AuthorService>();
 

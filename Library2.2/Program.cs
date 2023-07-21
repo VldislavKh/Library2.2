@@ -41,6 +41,7 @@ namespace Library2._2
             builder.Services.AddScoped<IAddDeleteUser, UserService>();
             builder.Services.AddScoped<IGetUsersInfo, UserService>();
             builder.Services.AddScoped<IAddDeleteRole, RoleService>();
+            builder.Services.AddScoped<IGetRolesInfo, RoleService>();
 
             var app = builder.Build();
 

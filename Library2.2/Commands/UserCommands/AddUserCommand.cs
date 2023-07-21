@@ -7,6 +7,7 @@ namespace Library2._2.Commands.UserCommands
     {
         public string Name { get; set; }
         public string Password { get; set; }
+        //public int RoleId { get; set; }
 
         public class AddUserCommandHandler : IRequestHandler<AddUserCommand, int>
         {

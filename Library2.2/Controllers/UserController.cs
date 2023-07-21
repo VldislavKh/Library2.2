@@ -16,7 +16,7 @@ namespace Library2._2.Controllers
         }
 
         [HttpPut("[action]")]
-        public async Task<ActionResult<int>> AddUser([FromBody] AddUserCommand command, CancellationToken cancellationToken)
+        public async Task<ActionResult<int>> AddUser(AddUserCommand command, CancellationToken cancellationToken)
         {
             return await _mediator.Send(command, cancellationToken);
         }

@@ -19,6 +19,12 @@ namespace Library2._2.Services
             user.Name = name;
             user.Password = password;
 
+            //if (_context.Roles.Contains(x => x.Id == roleId))
+            //{
+
+            //}
+            //user.Role = _context.Roles.SingleOrDefault(r => r.Id == roleId);
+
             _context.Add(user);
             _context.SaveChanges();
 

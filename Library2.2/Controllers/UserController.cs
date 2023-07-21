@@ -20,5 +20,12 @@ namespace Library2._2.Controllers
         {
             return await _mediator.Send(command, cancellationToken);
         }
+
+        [HttpDelete("[action]/{id}")]
+        public async Task<IActionResult> DeleteUser(int id, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new DeleteUserCommand() { Id = id }, cancellationToken);
+            return NoContent();
+        }
     }
 }

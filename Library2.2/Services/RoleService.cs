@@ -4,7 +4,7 @@ using Library2._2.Interfaces.RoleInterfaces;
 
 namespace Library2._2.Services
 {
-    public class RoleService : IAddDeleteRole
+    public class RoleService : IAddDeleteRole, IGetRolesInfo
     {
         private readonly ApplicationContext _context;
 
@@ -32,6 +32,11 @@ namespace Library2._2.Services
                 _context.Roles.Remove(role);
                 _context.SaveChanges();
             }
+        }
+
+        public List<Role> GetAll()
+        {
+            return _context.Roles.ToList();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Library2._2.Interfaces.AuthorInterfaces;
+using Library2._2.Interfaces.RoleInterfaces;
 using MediatR;
 
 namespace Library2._2.Commands.RoleCommands
@@ -9,9 +10,9 @@ namespace Library2._2.Commands.RoleCommands
 
         public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand>
         {
-            private readonly IAddDeleteAuthor _deleteRole;
+            private readonly IAddDeleteRole _deleteRole;
 
-            public DeleteRoleCommandHandler(IAddDeleteAuthor deleteRole)
+            public DeleteRoleCommandHandler(IAddDeleteRole deleteRole)
             {
                 _deleteRole = deleteRole;
             }

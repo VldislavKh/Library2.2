@@ -1,4 +1,6 @@
 ﻿using Library2._2.Commands.RoleCommands;
+using Library2._2.Entities;
+using Library2._2.Queries.RoleQueries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +28,13 @@ namespace Library2._2.Controllers
         {
             await _mediator.Send(new DeleteRoleCommand() { Id = id }, cancellationToken);
             return NoContent();
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetAllRoles(CancellationToken cancellationToken)
+        {
+            var roles = await _mediator.Send(new GetAllRolesQuery(), cancellationToken);
+            return CreatedAtAction("GetAllRoles", roles);
         }
     }
 }

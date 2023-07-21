@@ -7,4 +7,10 @@
     <RootNamespace>Library2._2</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\BookInterfaces\" />
+    <Folder Include="Interfaces\UserInterfaces\" />
+    <Folder Include="Interfaces\RoleInterfaces\" />
+  </ItemGroup>
+
 </Project>

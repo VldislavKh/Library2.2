@@ -1,5 +1,6 @@
 using Library2._2.Infrastructure;
 using Library2._2.Interfaces.AuthorInterfaces;
+using Library2._2.Interfaces.BookInterfaces;
 using Library2._2.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,8 @@ namespace Library2._2
 
             builder.Services.AddScoped<IAddDeleteAuthor, AuthorService>();
             builder.Services.AddScoped<IGetAuthorsInfo, AuthorService>();
+            builder.Services.AddScoped<IAddDeleteBook, BookService>();
+            builder.Services.AddScoped<IGetBooksInfo, BookService>();
 
             var app = builder.Build();
 

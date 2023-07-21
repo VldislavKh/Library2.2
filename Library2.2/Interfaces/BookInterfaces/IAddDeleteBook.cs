@@ -1,6 +1,8 @@
 ﻿namespace Library2._2.Interfaces.BookInterfaces
 {
-    public class IAddDeleteBook
+    public interface IAddDeleteBook
     {
+        public int Add(string title, int year, string genre, int authorId);
+        public void Delete(int id);
     }
 }

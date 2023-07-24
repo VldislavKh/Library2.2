@@ -13,9 +13,7 @@ namespace Library2._2.Entities
         [Column("Пароль")]
         public string Password { get; set; }
 
-        //[Column("Id Роли")]
-        //public int RoleId { get; set; }
-
-        //public Role? Role { get; set; }
+        [Column("Id роли")]
+        public Role? Role { get; set; }
     }
 }

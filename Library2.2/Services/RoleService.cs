@@ -4,7 +4,7 @@ using Library2._2.Interfaces.RoleInterfaces;
 
 namespace Library2._2.Services
 {
-    public class RoleService : IAddDeleteRole, IGetRolesInfo
+    public class RoleService : IAddDeleteRole, IGetRolesInfo, ISetRole
     {
         private readonly ApplicationContext _context;
 
@@ -37,6 +37,27 @@ namespace Library2._2.Services
         public List<Role> GetAll()
         {
             return _context.Roles.ToList();
+        }
+
+        public int Set(int userId,  int roleId)
+        {
+            var role = _context.Roles.SingleOrDefault(x => x.Id == roleId);
+            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
+
+            if (user == null) 
+            {
+                throw new ArgumentNullException(nameof(user), "Пользователя с заданным Id не существует!");   
+            }
+            if (role == null)
+            {
+                throw new ArgumentNullException(nameof(role), "Роли с заданным Id не существует!");
+            }
+
+            user.Role = role;
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            return user.Id;
         }
     }
 }

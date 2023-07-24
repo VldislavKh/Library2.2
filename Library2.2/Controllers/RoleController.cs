@@ -36,5 +36,11 @@ namespace Library2._2.Controllers
             var roles = await _mediator.Send(new GetAllRolesQuery(), cancellationToken);
             return CreatedAtAction("GetAllRoles", roles);
         }
+
+        [HttpPatch("[action]")]
+        public async Task<ActionResult<int>> SetRole([FromBody] SetRoleCommand command, CancellationToken cancellationToken)
+        {
+            return await _mediator.Send(command, cancellationToken);
+        }
     }
 }

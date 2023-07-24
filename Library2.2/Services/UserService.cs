@@ -43,7 +43,7 @@ namespace Library2._2.Services
             return _context.Users.ToList();
         }
 
-        private static string CreateSHA256(string input)
+        private string CreateSHA256(string input)
         {
             using SHA256 hash = SHA256.Create();
             return Convert.ToHexString(hash.ComputeHash(Encoding.ASCII.GetBytes(input)));

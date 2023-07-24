@@ -1,13 +1,17 @@
 using Library2._2.Infrastructure;
+using Library2._2.Interfaces.AuthInterfaces;
 using Library2._2.Interfaces.AuthorInterfaces;
 using Library2._2.Interfaces.BookInterfaces;
 using Library2._2.Interfaces.RoleInterfaces;
 using Library2._2.Interfaces.UserInterfaces;
+using Library2._2.Options;
 using Library2._2.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Library2._2
 {
@@ -16,6 +20,11 @@ namespace Library2._2
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Configuration.AddJsonFile("appsettings.json");
+
+            var authOptionsConfiguretion = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
+            builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
 
             // Add services to the container.
 
@@ -43,6 +52,7 @@ namespace Library2._2
             builder.Services.AddScoped<IAddDeleteRole, RoleService>();
             builder.Services.AddScoped<IGetRolesInfo, RoleService>();
             builder.Services.AddScoped<ISetRole, RoleService>();
+            builder.Services.AddScoped<IAuth, AuthService>();
 
             var app = builder.Build();
 

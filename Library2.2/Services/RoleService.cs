@@ -53,7 +53,7 @@ namespace Library2._2.Services
                 throw new ArgumentNullException(nameof(role), "Роли с заданным Id не существует!");
             }
 
-            user.Role = role;
+            user.RoleId = roleId;
             _context.Users.Update(user);
             _context.SaveChanges();
 

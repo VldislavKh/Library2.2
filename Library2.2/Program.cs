@@ -7,6 +7,7 @@ using Library2._2.Interfaces.UserInterfaces;
 using Library2._2.Options;
 using Library2._2.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -23,8 +24,26 @@ namespace Library2._2
 
             builder.Configuration.AddJsonFile("appsettings.json");
 
-            var authOptionsConfiguretion = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
+            var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
             builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = authOptions.Issuer,
+
+                    ValidateAudience = true,
+                    ValidAudience = authOptions.Audience,
+
+                    ValidateLifetime = true,
+
+                    IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
+                    ValidateIssuerSigningKey = true,
+                };
+            });
 
             // Add services to the container.
 
@@ -43,6 +62,15 @@ namespace Library2._2
                         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     });
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                    });
+            });
+
             builder.Services.AddScoped<IAddDeleteAuthor, AuthorService>();
             builder.Services.AddScoped<IGetAuthorsInfo, AuthorService>();
             builder.Services.AddScoped<IAddDeleteBook, BookService>();
@@ -53,6 +81,7 @@ namespace Library2._2
             builder.Services.AddScoped<IGetRolesInfo, RoleService>();
             builder.Services.AddScoped<ISetRole, RoleService>();
             builder.Services.AddScoped<IAuth, AuthService>();
+            builder.Services.AddScoped<IGenerateJwt, AuthService>();
 
             var app = builder.Build();
 
@@ -68,6 +97,9 @@ namespace Library2._2
                 });
             }
 
+            app.UseCors();
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

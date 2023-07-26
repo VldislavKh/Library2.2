@@ -1,6 +1,7 @@
 ﻿using Library2._2.Commands.BookCommands;
 using Library2._2.Queries.BookQueries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library2._2.Controllers
@@ -16,6 +17,7 @@ namespace Library2._2.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        [Authorize(Roles = "moderator, admin")]
         [HttpPut("[action]")]
         //Добавляет книгу в БД
         public async Task<ActionResult<int>> AddBook([FromBody] AddBookCommand command, CancellationToken token)
@@ -23,6 +25,7 @@ namespace Library2._2.Controllers
             return await _mediator.Send(command, token);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("[action]/{id}")]
         //Удаляет книгу из БД
         public async Task<IActionResult> DeleteBook(int id, CancellationToken token)
@@ -31,6 +34,7 @@ namespace Library2._2.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "moderator, admin, user")]
         [HttpGet("[action]/{id}")]
         //Возвращает автора книги по ее названию
         public async Task<IActionResult> GetAuthor(int id, CancellationToken token)
@@ -39,6 +43,7 @@ namespace Library2._2.Controllers
             return CreatedAtAction("GetAuthor", author);
         }
 
+        [Authorize(Roles = "moderator, admin, user")]
         [HttpGet("[action]/{id}")]
         //Возвращает жанр книги из бд по её названию
         public async Task<IActionResult> GetGenre(int id, CancellationToken token)

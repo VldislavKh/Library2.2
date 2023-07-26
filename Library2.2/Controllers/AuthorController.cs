@@ -1,6 +1,7 @@
 ﻿using Library2._2.Commands.AuthorCommands;
 using Library2._2.Queries.AuthorQueries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library2._2.Controllers
@@ -16,6 +17,7 @@ namespace Library2._2.Controllers
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
+        //[Authorize /*(Roles = "moderator, admin")*/]
         [HttpPut("[action]")]
         // Добавляет автора в бд 
         public async Task<ActionResult<int>> AddAuthor([FromBody] AddAuthorCommand command, CancellationToken token)
@@ -23,6 +25,7 @@ namespace Library2._2.Controllers
             return await _mediator.Send(command, token);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("[action]/{id}")]
         // Удаляет автора из указанной БД
         public async Task<IActionResult> DeleteAuthor(int id, CancellationToken token)
@@ -31,6 +34,7 @@ namespace Library2._2.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("[action]")]
         //Возвращает список всех авторов из бд 
         public async Task<IActionResult> GetAllAuthors(CancellationToken token)
@@ -39,6 +43,7 @@ namespace Library2._2.Controllers
             return CreatedAtAction("GetAllAuthors", authors);
         }
 
+        [Authorize(Roles = "moderator, admin, user")]
         [HttpGet("[action]/{id}")]
         // Возвращает список книг автора    
         public async Task<IActionResult> GetAuthorsBooks(int id, CancellationToken token)
@@ -47,6 +52,7 @@ namespace Library2._2.Controllers
             return CreatedAtAction("GetAuthorsBooks", books);
         }
 
+        [Authorize(Roles = "moderator, admin, user")]
         [HttpGet("[action]")]
         //Возвращает список авторов, у которых максмальное количество книг 
         public async Task<IActionResult> GetMaxBooksAuthors(CancellationToken token)

@@ -14,6 +14,7 @@ namespace Library2._2.Entities
         public string Password { get; set; }
 
         [Column("Id роли")]
-        public Role? Role { get; set; }
+        public int RoleId { get; set; }
+        //public Role? Role { get; set; }
     }
 }

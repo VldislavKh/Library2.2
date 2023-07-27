@@ -5,6 +5,7 @@ using Library2._2.Interfaces.BookInterfaces;
 using Library2._2.Interfaces.RoleInterfaces;
 using Library2._2.Interfaces.UserInterfaces;
 using Library2._2.Options;
+using Library2._2.RabbitMQ;
 using Library2._2.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -82,6 +83,7 @@ namespace Library2._2
             builder.Services.AddScoped<ISetRole, RoleService>();
             builder.Services.AddScoped<IAuth, AuthService>();
             builder.Services.AddScoped<IGenerateJwt, AuthService>();
+            builder.Services.AddScoped<IRabbitProducer, RabbitProducer>();
 
             var app = builder.Build();
 

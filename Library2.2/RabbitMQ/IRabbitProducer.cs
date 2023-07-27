@@ -1,6 +1,7 @@
 ﻿namespace Library2._2.RabbitMQ
 {
-    public class IRabbitProducer
+    public interface IRabbitProducer
     {
+        public void SendBookMessage<T>(T message);
     }
 }

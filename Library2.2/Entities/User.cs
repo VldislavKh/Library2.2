@@ -15,6 +15,7 @@ namespace Library2._2.Entities
 
         [Column("Id роли")]
         public int RoleId { get; set; }
-        //public Role? Role { get; set; }
+
+        public Role? Role { get; set; }
     }
 }

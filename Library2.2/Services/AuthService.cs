@@ -49,16 +49,8 @@ namespace Library2._2.Services
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString())
             };
 
-
-            //var role = user.Role.Name;
-            //claims.Add(new Claim("role", user.Role.ToString()));
             var role = _context.Roles.SingleOrDefault(r => r.Id == user.RoleId);
             claims.Add(new Claim("role", role.Name.ToString()));
-
-            //foreach (var role in _context.Roles)
-            //{
-            //    claims.Add(new Claim("role", role.Name.ToString()));
-            //}
 
             var token = new JwtSecurityToken(authParams.Issuer,
                 authParams.Audience,

@@ -54,6 +54,7 @@ namespace Library2._2.Services
             }
 
             user.RoleId = roleId;
+            user.Role = role;
             _context.Users.Update(user);
             _context.SaveChanges();
 

@@ -21,7 +21,7 @@ namespace Library2._2.Controllers
 
         //добавление роли
         [Authorize(Roles = "admin")]
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         public async Task<ActionResult<int>> AddRole([FromBody] AddRoleCommand command, CancellationToken cancellationToken)
         {
             return await _mediator.Send(command, cancellationToken);

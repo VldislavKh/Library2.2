@@ -10,10 +10,11 @@ using Library2._2.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
+using Serilog.Debugging;
 
 namespace Library2._2
 {
@@ -21,9 +22,37 @@ namespace Library2._2
     {
         public static void Main(string[] args)
         {
+
+
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Configuration.AddJsonFile("appsettings.json");
+
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            builder.Host.UseSerilog((hostBuilder, loggerConfiguration) =>
+            {
+                var envName = builder.Environment.EnvironmentName.ToLower().Replace(".", "-");
+                var yourAppName = "your-app-name";
+                var yourTemplateName = "your-template-name";
+
+                loggerConfiguration
+                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
+                    {
+                        IndexFormat = $"{yourAppName}-{envName}-{DateTimeOffset.Now:yyyy-MM}",
+                        AutoRegisterTemplate = true,
+                        OverwriteTemplate = true,
+                        TemplateName = yourTemplateName,
+                        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                        TypeName = null,
+                        BatchAction = ElasticOpType.Create,
+                    });
+            });
+
+            //Вывод ошибок в консоль.
+            SelfLog.Enable(Console.Error);
 
             var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
             builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
@@ -84,6 +113,7 @@ namespace Library2._2
             builder.Services.AddScoped<IAuth, AuthService>();
             builder.Services.AddScoped<IGenerateJwt, AuthService>();
             builder.Services.AddScoped<IRabbitProducer, RabbitProducer>();
+            
 
             var app = builder.Build();
 

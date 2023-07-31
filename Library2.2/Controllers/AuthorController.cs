@@ -18,7 +18,7 @@ namespace Library2._2.Controllers
         }
 
         //[Authorize /*(Roles = "moderator, admin")*/]
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         // Добавляет автора в бд 
         public async Task<ActionResult<int>> AddAuthor([FromBody] AddAuthorCommand command, CancellationToken token)
         {

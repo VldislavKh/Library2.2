@@ -19,7 +19,7 @@ namespace Library2._2.Controllers
 
         //добавление пользователя
         [Authorize(Roles = "moderator, admin")]
-        [HttpPut("[action]")]
+        [HttpPost("[action]")]
         public async Task<ActionResult<int>> AddUser(AddUserCommand command, CancellationToken cancellationToken)
         {
             return await _mediator.Send(command, cancellationToken);

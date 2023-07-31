@@ -21,6 +21,8 @@ namespace Library2._2.Services
             book.Year = year;
             book.Genre = genre;
             book.AuthorId = authorId;
+            var author = _context.Authors.FirstOrDefault(x => x.Id == authorId);
+            book.Author = author;
 
             _context.Add(book);
             _context.SaveChanges();

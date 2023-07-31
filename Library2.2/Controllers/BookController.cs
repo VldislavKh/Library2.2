@@ -1,8 +1,10 @@
 ﻿using Library2._2.Commands.BookCommands;
 using Library2._2.Queries.BookQueries;
+using Library2._2.RabbitMQ;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace Library2._2.Controllers
 {
@@ -11,18 +13,41 @@ namespace Library2._2.Controllers
     public class BookController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly IRabbitProducer _rabbitProducer;
+        private readonly ILogger<BookController> _logger;
 
-        public BookController(IMediator mediator)
+        public BookController(IMediator mediator, IRabbitProducer rabbitProducer, ILogger<BookController> logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _rabbitProducer = rabbitProducer;
+            _logger = logger;
         }
 
-        [Authorize(Roles = "moderator, admin")]
-        [HttpPut("[action]")]
+        //public IActionResult Index()
+        //{
+        //    _logger.LogInformation("BookController Index executed at {date}", DateTime.UtcNow);
+
+        //    return View();
+        //}
+
+        //[Authorize(Roles = "moderator, admin")]
+        [HttpPost("[action]")]
         //Добавляет книгу в БД
         public async Task<ActionResult<int>> AddBook([FromBody] AddBookCommand command, CancellationToken token)
         {
-            return await _mediator.Send(command, token);
+            try
+            {
+                _logger.LogInformation($"Добавление книги.", DateTime.UtcNow);
+                var bookData = await _mediator.Send(command, token);
+                _rabbitProducer.SendBookMessage(bookData);
+                _logger.LogInformation($"Книга добавлена.", DateTime.UtcNow);
+                return bookData;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Ошибка добавления книги. Причина: {ex.Message}", DateTime.UtcNow);
+                return -1;
+            }
         }
 
         [Authorize(Roles = "admin")]

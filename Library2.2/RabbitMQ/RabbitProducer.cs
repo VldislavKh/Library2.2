@@ -10,7 +10,13 @@ namespace Library2._2.RabbitMQ
         {
             var factory = new ConnectionFactory
             {
-                HostName = "localhost"
+                HostName = "localhost",
+                UserName = "rmuser",
+                Password = "rmpassword"
+                //Ssl =
+                //{
+                //    ServerName = "rabbitmq"
+                //}
             };
 
             var connection = factory.CreateConnection();
@@ -22,7 +28,7 @@ namespace Library2._2.RabbitMQ
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
 
-            chanel.BasicPublish(exchange: "", routingKey: "product", body: body);
+            chanel.BasicPublish(exchange: "ex1", routingKey: "book", body: body);
         }
     }
 }

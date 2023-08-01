@@ -9,6 +9,7 @@ namespace Library2._2.Infrastructure
         public DbSet<Book> Books => Set<Book>();
         public DbSet<User> Users => Set<User>();
         public DbSet<Role> Roles => Set<Role>();
+        public DbSet<TestTableHangfire> TestTableHangfires => Set<TestTableHangfire>();
 
         public ApplicationContext() { }
 

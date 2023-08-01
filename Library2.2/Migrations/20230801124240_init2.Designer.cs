@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NodaTime;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -12,8 +13,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Library2._2.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230724082942_ini")]
-    partial class ini
+    [Migration("20230801124240_init2")]
+    partial class init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,6 +103,25 @@ namespace Library2._2.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("Library2._2.Entities.TestTableHangfire", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
+                    b.Property<LocalDateTime>("TimeAdd")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TestTableHangfires");
+                });
+
             modelBuilder.Entity("Library2._2.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -120,8 +140,9 @@ namespace Library2._2.Migrations
                         .HasColumnType("text")
                         .HasColumnName("Пароль");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("integer");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer")
+                        .HasColumnName("Id роли");
 
                     b.HasKey("Id");
 
@@ -145,7 +166,9 @@ namespace Library2._2.Migrations
                 {
                     b.HasOne("Library2._2.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
                 });

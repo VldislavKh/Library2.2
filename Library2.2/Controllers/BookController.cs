@@ -23,13 +23,6 @@ namespace Library2._2.Controllers
             _logger = logger;
         }
 
-        //public IActionResult Index()
-        //{
-        //    _logger.LogInformation("BookController Index executed at {date}", DateTime.UtcNow);
-
-        //    return View();
-        //}
-
         //[Authorize(Roles = "moderator, admin")]
         [HttpPost("[action]")]
         //Добавляет книгу в БД
@@ -59,13 +52,13 @@ namespace Library2._2.Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "moderator, admin, user")]
+        //[Authorize(Roles = "moderator, admin, user")]
         [HttpGet("[action]/{id}")]
         //Возвращает автора книги по ее названию
         public async Task<IActionResult> GetAuthor(int id, CancellationToken token)
         {
             var author = await _mediator.Send(new GetAuthorByIdQuery() { Id = id }, token);
-            return CreatedAtAction("GetAuthor", author);
+            return Ok(author);
         }
 
         [Authorize(Roles = "moderator, admin, user")]
@@ -74,7 +67,7 @@ namespace Library2._2.Controllers
         public async Task<IActionResult> GetGenre(int id, CancellationToken token)
         {
             var genre = await _mediator.Send(new GetGenreByIdQuery() { Id = id }, token);
-            return CreatedAtAction("GetGenre", genre);
+            return Ok(genre);
         }
     }
 }

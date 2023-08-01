@@ -2,16 +2,20 @@
 using Library2._2.Infrastructure;
 using Library2._2.Interfaces.BookInterfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
 
 namespace Library2._2.Services
 {
     public class BookService : IAddDeleteBook, IGetBooksInfo
     {
         private readonly ApplicationContext _context;
+        private readonly IDistributedCache _cache;
 
-        public BookService(ApplicationContext context)
+        public BookService(ApplicationContext context, IDistributedCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         public int Add(string title, int year, string genre, int authorId)
@@ -41,7 +45,31 @@ namespace Library2._2.Services
 
         public Author GetAuthor(int id)
         {
-            return _context.Books.Include(x => x.Author).FirstOrDefault(x => x.Id == id).Author;
+            Book? book = null;
+
+            var bookString = _cache.GetString(id.ToString());
+
+            if (bookString != null)
+            {
+                book = JsonConvert.DeserializeObject<Book>(bookString);
+            }
+            else
+            {
+                book = _context.Books
+                    .Include(x => x.Author)
+                    .SingleOrDefault(x => x.Id == id);                    
+
+                if (book != null)
+                {
+                    bookString = JsonConvert.SerializeObject(book, new JsonSerializerSettings
+                                                            {
+                                                                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                            });
+
+                    _cache.SetString(id.ToString(), bookString);
+                }
+            }
+            return book.Author;
         }
 
         public string GetGenre(int id)

@@ -5,7 +5,7 @@
 namespace Library2._2.Migrations
 {
     /// <inheritdoc />
-    public partial class ini : Migration
+    public partial class init1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

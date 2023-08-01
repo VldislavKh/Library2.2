@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Library2._2.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init0 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -41,6 +41,20 @@ namespace Library2._2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TestTableHangfires",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Number = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TestTableHangfires", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
@@ -70,16 +84,17 @@ namespace Library2._2.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Имя = table.Column<string>(type: "text", nullable: false),
                     Пароль = table.Column<string>(type: "text", nullable: false),
-                    RoleId = table.Column<int>(type: "integer", nullable: true)
+                    Idроли = table.Column<int>(name: "Id роли", type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
-                        column: x => x.RoleId,
+                        name: "FK_Users_Roles_Id роли",
+                        column: x => x.Idроли,
                         principalTable: "Roles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -88,9 +103,9 @@ namespace Library2._2.Migrations
                 column: "Id автора");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleId",
+                name: "IX_Users_Id роли",
                 table: "Users",
-                column: "RoleId");
+                column: "Id роли");
         }
 
         /// <inheritdoc />
@@ -98,6 +113,9 @@ namespace Library2._2.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Books");
+
+            migrationBuilder.DropTable(
+                name: "TestTableHangfires");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Library2._2.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230724083335_inn")]
-    partial class inn
+    [Migration("20230801095513_init0")]
+    partial class init0
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,6 +102,25 @@ namespace Library2._2.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("Library2._2.Entities.TestTableHangfire", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TestTableHangfires");
+                });
+
             modelBuilder.Entity("Library2._2.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -120,8 +139,9 @@ namespace Library2._2.Migrations
                         .HasColumnType("text")
                         .HasColumnName("Пароль");
 
-                    b.Property<int?>("RoleId")
-                        .HasColumnType("integer");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer")
+                        .HasColumnName("Id роли");
 
                     b.HasKey("Id");
 
@@ -145,7 +165,9 @@ namespace Library2._2.Migrations
                 {
                     b.HasOne("Library2._2.Entities.Role", "Role")
                         .WithMany()
-                        .HasForeignKey("RoleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
                 });

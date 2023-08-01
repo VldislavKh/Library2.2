@@ -15,6 +15,12 @@ using System.Reflection;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using Serilog.Debugging;
+using Microsoft.Extensions.DependencyInjection;
+using Library2._2.Interfaces.TaskInterfaces;
+using Hangfire;
+using Hangfire.PostgreSql;
+using Microsoft.Extensions.Configuration;
+using Npgsql;
 
 namespace Library2._2
 {
@@ -22,8 +28,6 @@ namespace Library2._2
     {
         public static void Main(string[] args)
         {
-
-
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Configuration.AddJsonFile("appsettings.json");
@@ -78,11 +82,23 @@ namespace Library2._2
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            //NpgsqlConnection.GlobalTypeMapper.UseNodaTime();
             builder.Services.AddDbContext<ApplicationContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddHangfire(x =>
+                 x.UsePostgreSqlStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddHangfireServer();
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = "127.0.0.1:6379";
+                //options.InstanceName = "local";
+            });
 
             builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
@@ -113,6 +129,7 @@ namespace Library2._2
             builder.Services.AddScoped<IAuth, AuthService>();
             builder.Services.AddScoped<IGenerateJwt, AuthService>();
             builder.Services.AddScoped<IRabbitProducer, RabbitProducer>();
+            builder.Services.AddScoped<ITaskService, TaskService>();
             
 
             var app = builder.Build();
@@ -128,6 +145,9 @@ namespace Library2._2
                     options.RoutePrefix = string.Empty;
                 });
             }
+
+            app.UseHangfireDashboard("/dashboard"); //Will be available under http://localhost:5000/hangfire"
+            app.UseHangfireServer();
 
             app.UseCors();
 

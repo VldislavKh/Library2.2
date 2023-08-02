@@ -4,7 +4,6 @@ using Library2._2.RabbitMQ;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Library2._2.Controllers
 {

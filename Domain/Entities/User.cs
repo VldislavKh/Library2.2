@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 
-namespace Library2._2.Entities
+namespace Domain.Entities
 {
     public class User
     {

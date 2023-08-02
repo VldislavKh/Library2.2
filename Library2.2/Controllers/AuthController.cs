@@ -1,15 +1,8 @@
 ﻿using Library2._2.Commands.JwtCommands;
-using Library2._2.Entities;
-using Library2._2.Options;
 using Library2._2.Queries.AuthQueries;
 using Library2._2.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Library2._2.Controllers
 {

@@ -1,4 +1,4 @@
-﻿using Library2._2.Entities;
+﻿using Domain.Entities;
 using Library2._2.Interfaces.RoleInterfaces;
 using MediatR;
 

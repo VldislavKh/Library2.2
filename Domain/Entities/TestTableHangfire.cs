@@ -1,6 +1,4 @@
-﻿using NodaTime;
-
-namespace Library2._2.Entities
+﻿namespace Domain.Entities
 {
     public class TestTableHangfire
     {

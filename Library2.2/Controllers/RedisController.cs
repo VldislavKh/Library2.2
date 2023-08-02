@@ -1,4 +1,4 @@
-﻿using Library2._2.Infrastructure;
+﻿using Domain.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;

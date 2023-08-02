@@ -1,5 +1,5 @@
-﻿using Library2._2.Entities;
-using Library2._2.Infrastructure;
+﻿using Domain.Entities;
+using Domain.Infrastructure;
 using Library2._2.Interfaces.AuthInterfaces;
 using Library2._2.Options;
 using Microsoft.AspNetCore.Authentication.OAuth;

@@ -1,5 +1,5 @@
 ﻿using Library2._2.Commands.RoleCommands;
-using Library2._2.Entities;
+using Domain.Entities;
 using Library2._2.Queries.RoleQueries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

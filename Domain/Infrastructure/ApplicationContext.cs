@@ -1,7 +1,7 @@
-﻿using Library2._2.Entities;
+﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Library2._2.Infrastructure
+namespace Domain.Infrastructure
 {
     public class ApplicationContext : DbContext
     {
@@ -11,13 +11,14 @@ namespace Library2._2.Infrastructure
         public DbSet<Role> Roles => Set<Role>();
         public DbSet<TestTableHangfire> TestTableHangfires => Set<TestTableHangfire>();
 
-        public ApplicationContext() { }
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options) 
             : base(options)
-        { }
+        { 
+        }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDefaultSchema("Library");
+        }
     }
 }

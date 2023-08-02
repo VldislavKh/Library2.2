@@ -4,16 +4,20 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Library2._2.Migrations
+namespace Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class init0 : Migration
+    public partial class m2Migration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.EnsureSchema(
+                name: "Library");
+
             migrationBuilder.CreateTable(
                 name: "Authors",
+                schema: "Library",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -29,6 +33,7 @@ namespace Library2._2.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Roles",
+                schema: "Library",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -42,11 +47,12 @@ namespace Library2._2.Migrations
 
             migrationBuilder.CreateTable(
                 name: "TestTableHangfires",
+                schema: "Library",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    DateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TimeAdd = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Number = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -56,6 +62,7 @@ namespace Library2._2.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Books",
+                schema: "Library",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -71,6 +78,7 @@ namespace Library2._2.Migrations
                     table.ForeignKey(
                         name: "FK_Books_Authors_Id автора",
                         column: x => x.Idавтора,
+                        principalSchema: "Library",
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -78,6 +86,7 @@ namespace Library2._2.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Users",
+                schema: "Library",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -92,6 +101,7 @@ namespace Library2._2.Migrations
                     table.ForeignKey(
                         name: "FK_Users_Roles_Id роли",
                         column: x => x.Idроли,
+                        principalSchema: "Library",
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -99,11 +109,13 @@ namespace Library2._2.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_Id автора",
+                schema: "Library",
                 table: "Books",
                 column: "Id автора");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Id роли",
+                schema: "Library",
                 table: "Users",
                 column: "Id роли");
         }
@@ -112,19 +124,24 @@ namespace Library2._2.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Books");
+                name: "Books",
+                schema: "Library");
 
             migrationBuilder.DropTable(
-                name: "TestTableHangfires");
+                name: "TestTableHangfires",
+                schema: "Library");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Users",
+                schema: "Library");
 
             migrationBuilder.DropTable(
-                name: "Authors");
+                name: "Authors",
+                schema: "Library");
 
             migrationBuilder.DropTable(
-                name: "Roles");
+                name: "Roles",
+                schema: "Library");
         }
     }
 }

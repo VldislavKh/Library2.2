@@ -5,20 +5,12 @@ using Library2._2.Interfaces.BookInterfaces;
 using Library2._2.Interfaces.RoleInterfaces;
 using Library2._2.Interfaces.UserInterfaces;
 using Library2._2.Options;
-using Library2._2.RabbitMQ;
 using Library2._2.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Reflection;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
-using Serilog.Debugging;
-using Microsoft.Extensions.DependencyInjection;
-using Library2._2.Interfaces.TaskInterfaces;
-using Hangfire;
-using Hangfire.PostgreSql;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 
@@ -36,27 +28,27 @@ namespace Library2._2
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
-            builder.Host.UseSerilog((hostBuilder, loggerConfiguration) =>
-            {
-                var envName = builder.Environment.EnvironmentName.ToLower().Replace(".", "-");
-                var yourAppName = "your-app-name";
-                var yourTemplateName = "your-template-name";
+            //builder.Host.UseSerilog((hostBuilder, loggerConfiguration) =>
+            //{
+            //    var envName = builder.Environment.EnvironmentName.ToLower().Replace(".", "-");
+            //    var yourAppName = "your-app-name";
+            //    var yourTemplateName = "your-template-name";
 
-                loggerConfiguration
-                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
-                    {
-                        IndexFormat = $"{yourAppName}-{envName}-{DateTimeOffset.Now:yyyy-MM}",
-                        AutoRegisterTemplate = true,
-                        OverwriteTemplate = true,
-                        TemplateName = yourTemplateName,
-                        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-                        TypeName = null,
-                        BatchAction = ElasticOpType.Create,
-                    });
-            });
+            //    loggerConfiguration
+            //        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
+            //        {
+            //            IndexFormat = $"{yourAppName}-{envName}-{DateTimeOffset.Now:yyyy-MM}",
+            //            AutoRegisterTemplate = true,
+            //            OverwriteTemplate = true,
+            //            TemplateName = yourTemplateName,
+            //            AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+            //            TypeName = null,
+            //            BatchAction = ElasticOpType.Create,
+            //        });
+            //});
 
             //Вывод ошибок в консоль.
-            SelfLog.Enable(Console.Error);
+            //SelfLog.Enable(Console.Error);
 
             var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
             builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
@@ -87,18 +79,18 @@ namespace Library2._2
             builder.Services.AddDbContext<ApplicationContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddHangfire(x =>
-                 x.UsePostgreSqlStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddHangfireServer();
+            //builder.Services.AddHangfire(x =>
+            //     x.UsePostgreSqlStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+            //builder.Services.AddHangfireServer();
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = "127.0.0.1:6379";
-                //options.InstanceName = "local";
-            });
+            //builder.Services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = "127.0.0.1:6379";
+            //    //options.InstanceName = "local";
+            //});
 
             builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
@@ -128,8 +120,7 @@ namespace Library2._2
             builder.Services.AddScoped<ISetRole, RoleService>();
             builder.Services.AddScoped<IAuth, AuthService>();
             builder.Services.AddScoped<IGenerateJwt, AuthService>();
-            builder.Services.AddScoped<IRabbitProducer, RabbitProducer>();
-            builder.Services.AddScoped<ITaskService, TaskService>();
+
             
 
             var app = builder.Build();
@@ -146,8 +137,8 @@ namespace Library2._2
                 });
             }
 
-            app.UseHangfireDashboard("/dashboard"); //Will be available under http://localhost:5000/hangfire"
-            app.UseHangfireServer();
+            //app.UseHangfireDashboard("/dashboard"); //Will be available under http://localhost:5000/hangfire"
+            //app.UseHangfireServer();
 
             app.UseCors();
 

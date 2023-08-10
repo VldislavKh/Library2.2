@@ -8,8 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.4" />
-    <PackageReference Include="Hangfire.PostgreSql" Version="1.20.0" />
+    <Compile Remove="Commands\TestTaskCommands\**" />
+    <Compile Remove="RabbitMQ\**" />
+    <Content Remove="Commands\TestTaskCommands\**" />
+    <Content Remove="RabbitMQ\**" />
+    <EmbeddedResource Remove="Commands\TestTaskCommands\**" />
+    <EmbeddedResource Remove="RabbitMQ\**" />
+    <None Remove="Commands\TestTaskCommands\**" />
+    <None Remove="RabbitMQ\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\TestHangfireController.cs" />
+    <Compile Remove="Interfaces\TaskInterfaces\ITaskService.cs" />
+    <Compile Remove="Services\TaskService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.9" />
@@ -19,11 +34,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="7.0.9" />
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.32.0" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
-    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
-    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
-    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="9.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.0" />
@@ -31,6 +41,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\TaskInterfaces\" />
   </ItemGroup>
 
 </Project>

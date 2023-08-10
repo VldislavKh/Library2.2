@@ -1,6 +1,5 @@
 ﻿using Library2._2.Commands.BookCommands;
 using Library2._2.Queries.BookQueries;
-using Library2._2.RabbitMQ;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,14 +11,10 @@ namespace Library2._2.Controllers
     public class BookController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IRabbitProducer _rabbitProducer;
-        private readonly ILogger<BookController> _logger;
 
-        public BookController(IMediator mediator, IRabbitProducer rabbitProducer, ILogger<BookController> logger)
+        public BookController(IMediator mediator)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-            _rabbitProducer = rabbitProducer;
-            _logger = logger;
         }
 
         //[Authorize(Roles = "moderator, admin")]
@@ -27,19 +22,21 @@ namespace Library2._2.Controllers
         //Добавляет книгу в БД
         public async Task<ActionResult<int>> AddBook([FromBody] AddBookCommand command, CancellationToken token)
         {
-            try
-            {
-                _logger.LogInformation($"Добавление книги.", DateTime.UtcNow);
-                var bookData = await _mediator.Send(command, token);
-                _rabbitProducer.SendBookMessage(bookData);
-                _logger.LogInformation($"Книга добавлена.", DateTime.UtcNow);
-                return bookData;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Ошибка добавления книги. Причина: {ex.Message}", DateTime.UtcNow);
-                return -1;
-            }
+            //try
+            //{
+            //    _logger.LogInformation($"Добавление книги.", DateTime.UtcNow);
+            //    var bookData = await _mediator.Send(command, token);
+            //    _rabbitProducer.SendBookMessage(bookData);
+            //    _logger.LogInformation($"Книга добавлена.", DateTime.UtcNow);
+            //    return bookData;
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError($"Ошибка добавления книги. Причина: {ex.Message}", DateTime.UtcNow);
+            //    return -1;
+            //}
+            var id = await _mediator.Send(command, token);
+            return Ok(id);
         }
 
         [Authorize(Roles = "admin")]

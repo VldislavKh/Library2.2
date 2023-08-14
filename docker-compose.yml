@@ -11,14 +11,13 @@ services:
     ports:
       - "5432:5432"
 
-  library:
-    image: library-image
+  testPostrgres:
+    image: postgres
     restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile
+    environment:
+      POSTGRES_DB: "test-library-db"
+      POSTGRES_USER: "dbuser"
+      POSTGRES_PASSWORD: "testdbpassword"
     ports:
-       - 5220:5220
-    depends_on:
-       - "postgres"
+      - "5436:5432"
 

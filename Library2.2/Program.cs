@@ -13,6 +13,11 @@ using Newtonsoft.Json;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using System;
+using Domain.Entities;
+using Library2._2.Validators;
 
 namespace Library2._2
 {
@@ -120,8 +125,9 @@ namespace Library2._2
             builder.Services.AddScoped<ISetRole, RoleService>();
             builder.Services.AddScoped<IAuth, AuthService>();
             builder.Services.AddScoped<IGenerateJwt, AuthService>();
+            builder.Services.AddScoped<IValidator<Author>, AuthorValidator>();
 
-            
+
 
             var app = builder.Build();
 

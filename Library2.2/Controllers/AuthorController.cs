@@ -20,39 +20,39 @@ namespace Library2._2.Controllers
         //[Authorize /*(Roles = "moderator, admin")*/]
         [HttpPost("[action]")]
         // Добавляет автора в бд 
-        public async Task<ActionResult<int>> AddAuthor([FromBody] AddAuthorCommand command, CancellationToken token)
+        public async Task<ActionResult<int>> AddAuthor([FromBody] AddAuthorCommand command, CancellationToken token) //tested
         {
             return await _mediator.Send(command, token);
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpDelete("[action]/{id}")]
         // Удаляет автора из указанной БД
-        public async Task<IActionResult> DeleteAuthor(int id, CancellationToken token)
+        public async Task<IActionResult> DeleteAuthor(int id, CancellationToken token) //tested
         {
             await _mediator.Send(new DeleteAuthorCommand() { AuthorId = id }, token);
             return NoContent();
         }
 
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         [HttpGet("[action]")]
         //Возвращает список всех авторов из бд 
-        public async Task<IActionResult> GetAllAuthors(CancellationToken token)
+        public async Task<IActionResult> GetAllAuthors(CancellationToken token) //tested
         {
             var authors = await _mediator.Send(new GetAllAuthorsQuery(), token);
             return CreatedAtAction("GetAllAuthors", authors);
         }
 
-        [Authorize(Roles = "moderator, admin, user")]
+        //[Authorize(Roles = "moderator, admin, user")]
         [HttpGet("[action]/{id}")]
         // Возвращает список книг автора    
-        public async Task<IActionResult> GetAuthorsBooks(int id, CancellationToken token)
+        public async Task<IActionResult> GetAuthorsBooks(int id, CancellationToken token) //tested
         {
             var books = await _mediator.Send(new GetAuthorsBooksQuery() { AuthorId = id }, token);
             return CreatedAtAction("GetAuthorsBooks", books);
         }
 
-        [Authorize(Roles = "moderator, admin, user")]
+        //[Authorize(Roles = "moderator, admin, user")]
         [HttpGet("[action]")]
         //Возвращает список авторов, у которых максмальное количество книг 
         public async Task<IActionResult> GetMaxBooksAuthors(CancellationToken token)

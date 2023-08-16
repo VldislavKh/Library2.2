@@ -18,6 +18,7 @@ using FluentValidation;
 using System;
 using Domain.Entities;
 using Library2._2.Validators;
+using Library2._2.CustomExceptionMiddleware;
 
 namespace Library2._2
 {
@@ -125,7 +126,7 @@ namespace Library2._2
             builder.Services.AddScoped<ISetRole, RoleService>();
             builder.Services.AddScoped<IAuth, AuthService>();
             builder.Services.AddScoped<IGenerateJwt, AuthService>();
-            builder.Services.AddScoped<IValidator<Author>, AuthorValidator>();
+            //builder.Services.AddScoped<IValidator<Author>, AuthorValidator>();
 
 
 
@@ -145,6 +146,8 @@ namespace Library2._2
 
             //app.UseHangfireDashboard("/dashboard"); //Will be available under http://localhost:5000/hangfire"
             //app.UseHangfireServer();
+
+            app.ConfigureCustomExceptionMiddleware();
 
             app.UseCors();
 

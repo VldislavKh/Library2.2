@@ -1,6 +1,8 @@
 ﻿using Domain.Entities;
 using Domain.Infrastructure;
+using Library2._2.CustomExceptionMiddleware.CustomExceptions;
 using Library2._2.Interfaces.AuthorInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Library2._2.Services
 {
@@ -41,7 +43,9 @@ namespace Library2._2.Services
 
         public List<Book> GetBooks(int id)
         {
-            return _context.Books.Where(x => x.AuthorId == id).ToList();
+            var author = _context.Authors.Include(author => author.Books).FirstOrDefault(author => author.Id == id)
+                ?? throw new NotFoundException(nameof(_context.Books), id);
+            return author.Books;
         }
 
         public List<Author> GetMaxBooksAuthors()

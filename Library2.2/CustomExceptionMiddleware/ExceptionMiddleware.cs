@@ -31,9 +31,9 @@ namespace Library2._2.CustomExceptionMiddleware
         {
             context.Response.ContentType = "application/json";
 
-            int code = (int)HttpStatusCode.InternalServerError;
+            int code = StatusCodes.Status404NotFound;
             string message = "Internal Server Error";
-            string s;
+
 
             List<ErrorBody> errors = new();
 
@@ -53,6 +53,11 @@ namespace Library2._2.CustomExceptionMiddleware
                 case NotFoundException notFoundEx:
                     code = StatusCodes.Status404NotFound;
                     message = "Not found";
+                    break;
+
+                case Exception ex:
+                    code = (int)HttpStatusCode.InternalServerError;
+                    message = ex.Message;
                     break;
             }
 

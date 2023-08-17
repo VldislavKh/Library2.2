@@ -9,19 +9,24 @@ namespace Library2._2.Services
     public class AuthorService : IAddDeleteAuthor, IGetAuthorsInfo
     {
         private readonly ApplicationContext _context;
-        public AuthorService(ApplicationContext context)
+        private readonly ILogger<AuthorService> _logger;
+        public AuthorService(ApplicationContext context, ILogger<AuthorService> logger)
         {
             _context = context;
+            _logger = logger;
         }
         public int Add(string name, DateOnly birthDate, DateOnly? deathDate)
         {
+            _logger.LogInformation("Добавление автора...");
             var author = new Author();
             author.Name = name;
             author.BirthDate = birthDate;
             author.DeathDate = deathDate;
 
+
             _context.Add(author);
             _context.SaveChanges();
+            _logger.LogInformation($"Автор {author.Name} добавлен!");
             return author.Id;
         }
 

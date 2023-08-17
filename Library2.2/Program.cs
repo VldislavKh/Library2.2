@@ -10,15 +10,16 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Reflection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Npgsql;
-using FluentValidation.AspNetCore;
-using FluentValidation;
+using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using System;
-using Domain.Entities;
-using Library2._2.Validators;
+using System.Reflection;
 using Library2._2.CustomExceptionMiddleware;
+using Serilog.Debugging;
+using Library2._2.Logging;
 
 namespace Library2._2
 {
@@ -34,27 +35,28 @@ namespace Library2._2
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
 
-            //builder.Host.UseSerilog((hostBuilder, loggerConfiguration) =>
-            //{
-            //    var envName = builder.Environment.EnvironmentName.ToLower().Replace(".", "-");
-            //    var yourAppName = "your-app-name";
-            //    var yourTemplateName = "your-template-name";
 
-            //    loggerConfiguration
-            //        .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
-            //        {
-            //            IndexFormat = $"{yourAppName}-{envName}-{DateTimeOffset.Now:yyyy-MM}",
-            //            AutoRegisterTemplate = true,
-            //            OverwriteTemplate = true,
-            //            TemplateName = yourTemplateName,
-            //            AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-            //            TypeName = null,
-            //            BatchAction = ElasticOpType.Create,
-            //        });
-            //});
+            builder.Host.UseSerilog((hostBuilder, loggerConfiguration) =>
+            {
+                var envName = builder.Environment.EnvironmentName.ToLower().Replace(".", "-");
+                var yourAppName = "your-app-name";
+                var yourTemplateName = "your-template-name";
+
+                loggerConfiguration
+                    .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
+                    {
+                        IndexFormat = $"{yourAppName}-{envName}-{DateTimeOffset.Now:yyyy-MM}",
+                        AutoRegisterTemplate = true,
+                        OverwriteTemplate = true,
+                        TemplateName = yourTemplateName,
+                        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                        TypeName = null,
+                        BatchAction = ElasticOpType.Create,
+                    });
+            });
 
             //Вывод ошибок в консоль.
-            //SelfLog.Enable(Console.Error);
+            SelfLog.Enable(Console.Error);
 
             var authOptions = builder.Configuration.GetSection("Auth").Get<AuthOptions>();
             builder.Services.Configure<AuthOptions>(builder.Configuration.GetSection("Auth"));
@@ -81,7 +83,6 @@ namespace Library2._2
 
             builder.Services.AddControllers();
 
-            //NpgsqlConnection.GlobalTypeMapper.UseNodaTime();
             builder.Services.AddDbContext<ApplicationContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -126,9 +127,6 @@ namespace Library2._2
             builder.Services.AddScoped<ISetRole, RoleService>();
             builder.Services.AddScoped<IAuth, AuthService>();
             builder.Services.AddScoped<IGenerateJwt, AuthService>();
-            //builder.Services.AddScoped<IValidator<Author>, AuthorValidator>();
-
-
 
             var app = builder.Build();
 
@@ -146,7 +144,7 @@ namespace Library2._2
 
             //app.UseHangfireDashboard("/dashboard"); //Will be available under http://localhost:5000/hangfire"
             //app.UseHangfireServer();
-
+            app.UseMiddleware<RequestLoggingMiddleware>();
             app.ConfigureCustomExceptionMiddleware();
 
             app.UseCors();

@@ -19,7 +19,7 @@ namespace Library2._2.Controllers
 
         //[Authorize(Roles = "moderator, admin")]
         [HttpPost("[action]")]
-        //Добавляет книгу в БД
+        //Добавляет книгу в БД.Senf
         public async Task<ActionResult<int>> AddBook([FromBody] AddBookCommand command, CancellationToken token)
         {
             //try

@@ -3,7 +3,6 @@ version: '3.9'
 services:
   postgres:
     image: postgres
-    restart: always
     environment:
       POSTGRES_DB: "library-db"
       POSTGRES_USER: "dbuser"
@@ -13,14 +12,13 @@ services:
 
   testPostrgres:
     image: postgres
-    restart: always
     environment:
       POSTGRES_DB: "test-library-db"
       POSTGRES_USER: "dbuser"
       POSTGRES_PASSWORD: "testdbpassword"
     ports:
       - "5436:5432"
-  
+
   elasticsearch:
     image: elasticsearch:8.2.2
     environment:
@@ -43,7 +41,7 @@ services:
     depends_on:
       - elasticsearch
     networks:
-      - elastic   
+      - elastic
 
 volumes:
   es_data:
@@ -53,4 +51,3 @@ networks:
   elastic:
     name: elastic
     driver: bridge
-
